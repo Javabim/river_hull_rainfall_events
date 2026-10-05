@@ -1,0 +1,7 @@
+data/raw/*
+!data/raw/.gitkeep
+__pycache__/
+.ipynb_checkpoints/
+.venv/
+venv/
+.DS_Store
