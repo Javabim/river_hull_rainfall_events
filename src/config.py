@@ -24,7 +24,9 @@ END_DATE = "2025-10-01"
 # Event separation settings
 MIN_DRY_GAP_H = 6          # hours without rain that separate two events
 MIN_EVENT_DEPTH_MM = 2.0   # events smaller than this are ignored
-RESPONSE_WINDOW_H = 72     # hours after an event in which to look for the river peak
+QUICK_WINDOW_H = 24        # hours after rain ends in which to look for the quick river peak
+RESPONSE_WINDOW_H = 72     # hours after rain ends in which to look for any delayed rise
+RESPONSE_THRESHOLD_PCT = 5 # a storm counts as "responsive" if flow rose by at least this %
 
 # Quality assurance settings
 RAIN_MAX_15MIN_MM = 25.0   # 15 minute totals above this are treated as implausible
