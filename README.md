@@ -4,19 +4,33 @@ Status: work in progress (October 2026)
 
 ## Question
 
-How does the River Hull respond to individual rainfall events, and how do rainfall depth, season and antecedent wetness change that response?
+How does the river respond to individual rainfall events, and how do rainfall depth, intensity, season and antecedent wetness change that response?
 
 ## Data
 
-Open rainfall and river data from the Environment Agency Hydrology Data Explorer, at 15 minute resolution. Raw data is downloaded by script and is not stored in this repository.
+Open 15 minute rainfall and river data from the Environment Agency [Hydrology API](https://environment.data.gov.uk/hydrology/doc/reference), published under the Open Government Licence v3.0. Raw data is downloaded by script and is not stored in this repository.
 
 ## Pipeline
 
-1. Data acquisition (`src/download_data.py`)
-2. Quality assurance: gaps, quality flags, spikes, flat lines, timestamp alignment (`src/quality_checks.py`)
-3. Rainfall event separation using a minimum dry gap and minimum event depth (`src/events.py`)
-4. Event statistics: depth, duration, peak intensity, antecedent dry period, peak river response, lag time (`src/event_stats.py`)
-5. Analysis and figures (`notebooks/`)
+| Stage | Script | What it does |
+|---|---|---|
+| 0 | `src/find_stations.py` | Lists rainfall and river stations near the study area |
+| 2 | `src/download_data.py` | Downloads the chosen 15 minute series, one year at a time |
+| 3 | `src/quality_checks.py` | Removes duplicates, regularises to a 15 minute grid, applies EA quality flags, removes impossible values and spikes, flags flat lines, fills only short gaps, writes `reports/qa_report.md` |
+| 4 | `src/events.py` | Separates rainfall into events using a minimum dry gap and minimum depth |
+| 5 | `src/event_stats.py` | Measures each event's river response: baseline, peak, rise and lag time |
+| 6 | `src/make_figures.py` | Produces figures and `reports/summary.md` |
+
+All settings (stations, dates, thresholds) live in `src/config.py`.
+
+## How to run
+
+```
+pip install -r requirements.txt
+python src/find_stations.py
+# paste your chosen station ids into src/config.py
+python src/run_pipeline.py
+```
 
 ## Findings
 
@@ -29,10 +43,3 @@ To be added.
 ## Relevance to SuDS monitoring
 
 To be added.
-
-## How to run
-
-```
-pip install -r requirements.txt
-python src/download_data.py
-```
